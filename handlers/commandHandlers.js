@@ -413,6 +413,14 @@ Verifikasi armada dengan nickname
 📷 */verifikasi TJA-XXX FOTO* 
 Upload foto armada (kirim foto dengan caption ini)
 
+✅ */hadir TJA-XXX*
+Absensi kehadiran harian
+Contoh: /hadir TJA-001
+
+🏥 */absen TJA-XXX keterangan*
+Izin dengan alasan
+Contoh: /absen TJA-001 sakit demam
+
 ℹ️ */info*
 Menampilkan panduan ini
 
@@ -437,6 +445,10 @@ _PT TRIJAYA AGUNG LESTARI @2025_
 
 ✅ **Verification**: /verifikasi [kode] [action]
    Verify your armada data
+
+📋 **Attendance System**:
+   • /hadir TJA-XXX - Mark attendance
+   • /absen TJA-XXX reason - Request leave
 
 ❓ **Help**: /info
    Show this guide
