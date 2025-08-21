@@ -1,0 +1,11 @@
+2025/08/21-11:48:39.681 25e4 Creating DB C:\Project\bottja\.wwebjs_auth\session-tja-bot\Default\Local Storage\leveldb since it was missing.
+2025/08/21-11:48:39.710 25e4 Reusing MANIFEST C:\Project\bottja\.wwebjs_auth\session-tja-bot\Default\Local Storage\leveldb/MANIFEST-000001
+2025/08/21-13:39:05.578 1eb4 Level-0 table #5: started
+2025/08/21-13:39:05.586 1eb4 Level-0 table #5: 15001 bytes OK
+2025/08/21-13:39:05.591 1eb4 Delete type=0 #3
+2025/08/21-15:56:40.026 4a8c Level-0 table #7: started
+2025/08/21-15:56:40.044 4a8c Level-0 table #7: 10716 bytes OK
+2025/08/21-15:56:40.050 4a8c Delete type=0 #4
+2025/08/21-18:39:22.631 13ec Level-0 table #9: started
+2025/08/21-18:39:22.648 13ec Level-0 table #9: 10632 bytes OK
+2025/08/21-18:39:22.662 13ec Delete type=0 #6
