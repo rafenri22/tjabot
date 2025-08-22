@@ -407,9 +407,13 @@ Contoh: /siapa yang paling ganteng?
 Mencari kembaran seseorang dengan foto
 Contoh: /kembaran agungg
 
-🌅 */hari*
-Pengantar harian dari bot (beda setiap hari!)
-✨ Khusus Jumat: Ajakan sholat Jumat + absensi!
+🎨 */stiker* 🆕
+Bikin stiker dari foto yang kamu kirim! 
+Cara: Kirim foto + caption /stiker
+
+🤖 */ask pertanyaan* 🆕
+Tanya apa aja ke bot! AI-powered search!
+Contoh: /ask apa itu global warming?
 
 🔧 */verifikasi TJA-XXX NICKNAME=nama* 
 Verifikasi armada dengan nickname
@@ -430,40 +434,6 @@ Menampilkan panduan ini
 
 _PT TRIJAYA AGUNG LESTARI @2025_
 *"Connecting People, Creating Memories"* ✨`,
-
-      `🤖 *BOT TJA - YOUR DIGITAL ASSISTANT* 📱
-
-*Available Commands:*
-
-🚍 **Armada Info**: /TJA-XXX
-   Get complete armada information
-
-😂 **Jomok Checker**: /jomox [nama]
-   Check someone's jomok level (AI-powered!)
-
-🎲 **Random Picker**: /siapa [pertanyaan?]
-   Let AI choose someone randomly
-
-👫 **Twin Finder**: /kembaran [nama]
-   Find someone's lookalike (with photo!)
-
-🌤️ **Daily Greeting**: /hari
-   Get daily greeting (special Friday features!)
-
-✅ **Verification**: /verifikasi [kode] [action]
-   Verify your armada data
-
-📋 **Attendance System**:
-   • /hadir TJA-XXX - Mark attendance (daily/Friday)
-   • /absen TJA-XXX reason - Request leave
-   • /rekap - Daily attendance summary
-   • /jumlah [option] - Monthly reports
-
-❓ **Help**: /info
-   Show this guide
-
-*Made with ❤️ by TJA Tech Team*
-_"Innovation in Transportation & Islamic Values"_ 🚀🕌`,
     ];
 
     const randomInfo = infoTexts[Math.floor(Math.random() * infoTexts.length)];

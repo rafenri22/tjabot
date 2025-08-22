@@ -5,7 +5,7 @@ class BotHelpers {
     return message.from.includes("@g.us");
   }
 
-  // Fungsi untuk mengecek apakah command valid (UPDATED - added /hari)
+  // Fungsi untuk mengecek apakah command valid (UPDATED - added /hari, /stiker, /ask)
   static isValidCommand(text) {
     const commands = [
       "/TJA-",
@@ -25,8 +25,12 @@ class BotHelpers {
       "/REKAP",
       "/jumlah",
       "/JUMLAH",
-      "/hari", // NEW COMMAND
-      "/HARI", // NEW COMMAND
+      "/hari", // Daily greeting command
+      "/HARI", // Daily greeting command
+      "/stiker", // NEW: Sticker maker command
+      "/STIKER", // NEW: Sticker maker command
+      "/ask", // NEW: Ask/question command
+      "/ASK", // NEW: Ask/question command
     ];
     return commands.some((cmd) =>
       text.toLowerCase().startsWith(cmd.toLowerCase())

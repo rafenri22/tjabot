@@ -3,6 +3,8 @@ const qrcode = require("qrcode-terminal");
 const CommandHandlers = require("./handlers/commandHandlers");
 const AttendanceHandlers = require("./handlers/attendanceHandlers");
 const DailyGreetingHandlers = require("./handlers/dailyGreetingHandlers");
+const StickerHandlers = require("./handlers/stickerHandlers"); // NEW
+const AskHandlers = require("./handlers/askHandlers"); // NEW
 const BotHelpers = require("./utils/helpers");
 
 // Inisialisasi client WhatsApp
@@ -45,6 +47,8 @@ const client = new Client({
 const commandHandlers = new CommandHandlers(client);
 const attendanceHandlers = new AttendanceHandlers(client);
 const dailyGreetingHandlers = new DailyGreetingHandlers(client);
+const stickerHandlers = new StickerHandlers(client); // NEW
+const askHandlers = new AskHandlers(client); // NEW
 
 // Variable untuk tracking last reset date
 let lastResetDate = null;
@@ -53,9 +57,7 @@ let lastResetDate = null;
 client.on("qr", (qr) => {
   console.log("📱 Scan QR Code di bawah ini untuk login WhatsApp:");
   qrcode.generate(qr, { small: true });
-  console.log(
-    "✨ TJA Bot v3.0 - Now with Daily Greetings & Islamic Features! 🕌🎭"
-  );
+  console.log("✨ TJA Bot v4.0 - Now with Sticker Maker & AI Assistant! 🎨🤖");
 });
 
 // Event ketika client sudah siap
@@ -65,6 +67,8 @@ client.on("ready", () => {
   console.log("🎭 Now featuring 50+ hilarious responses!");
   console.log("🕌 Islamic features for Friday prayers!");
   console.log("📅 Daily greeting system activated!");
+  console.log("🎨 NEW: Sticker maker feature enabled! 🆕");
+  console.log("🧠 NEW: AI-powered Q&A assistant ready! 🆕");
   console.log("📋 Commands available:");
   console.log("   - /TJA-XXX (info armada with style)");
   console.log("   - /jomox nama (cek jomok level - 50+ responses!)");
@@ -72,7 +76,9 @@ client.on("ready", () => {
     "   - /siapa pertanyaan? (random member picker - sarcastic edition)"
   );
   console.log("   - /kembaran nama (find twin with photo)");
-  console.log("   - /hari (daily greeting - special Friday features!) 🆕");
+  console.log("   - /hari (daily greeting - special Friday features!)");
+  console.log("   - /stiker (convert image to sticker) 🆕");
+  console.log("   - /ask question (AI-powered search & answer) 🆕");
   console.log("   - /verifikasi (verifikasi armada - now with sass)");
   console.log("   - /hadir TJA-XXX (attendance: daily + Friday prayer)");
   console.log("   - /absen TJA-XXX keterangan (leave request: daily + Friday)");
@@ -81,9 +87,11 @@ client.on("ready", () => {
     "   - /jumlah TJA-XXX/all/jumatan (monthly reports including Friday prayers)"
   );
   console.log("   - /info (help with personality + new features)");
-  console.log("🚀 TJA Bot v3.0 is ready to entertain & inspire!");
+  console.log("🚀 TJA Bot v4.0 is ready to entertain, inspire & assist!");
   console.log("📊 Enhanced attendance system with Islamic values!");
   console.log("🎭 Funny sanctions for Friday prayer absentees!");
+  console.log("🎨 Advanced sticker creation with image processing!");
+  console.log("🧠 Smart Q&A with web search integration!");
   console.log("");
 
   // Initialize daily reset
@@ -150,9 +158,34 @@ client.on("message", async (message) => {
 
     const lowerText = text.toLowerCase();
 
-    // Handle /hari command (NEW!)
+    // Handle /hari command
     if (lowerText === "/hari") {
       await dailyGreetingHandlers.handleHariCommand(message);
+    }
+
+    // Handle /stiker command (NEW!)
+    else if (lowerText === "/stiker" || lowerText === "/STIKER") {
+      await stickerHandlers.handleStikerCommand(message);
+    }
+
+    // Handle /ask command (NEW!)
+    else if (lowerText.startsWith("/ask ") || lowerText.startsWith("/ASK ")) {
+      const question = text.substring(5); // Remove '/ask '
+      if (question.trim()) {
+        await askHandlers.handleAskCommand(message, question.trim());
+      } else {
+        const emptyAskResponses = [
+          "❌ Pertanyaannya mana? Format: /ask [pertanyaan] 🤔",
+          "❌ Mau nanya apa nih? /ask [pertanyaan yang ingin ditanyakan] 💭",
+          "❌ Question not found! Please ask something 📝",
+          "❌ Empty query detected! Isi pertanyaannya dong 🧠",
+        ];
+        const randomEmpty =
+          emptyAskResponses[
+            Math.floor(Math.random() * emptyAskResponses.length)
+          ];
+        await message.reply(randomEmpty);
+      }
     }
 
     // Handle /TJA-xxx command
@@ -252,6 +285,8 @@ client.on("message", async (message) => {
       "❌ Bot.exe has stopped working. Please restart your expectations 🤖💥",
       "❌ System lagi loading... tapi kayaknya stuck. Try again! 🔄",
       "❌ Error 404: Brain.exe not found! Mungkin lagi istirahat 🧠💤",
+      "❌ AI overload! Too much intelligence for one day 🤯⚡",
+      "❌ Sticker machine jammed! Engineer on the way 🔧🎨",
     ];
     const randomError =
       errorResponses[Math.floor(Math.random() * errorResponses.length)];
@@ -313,27 +348,35 @@ process.on("uncaughtException", (error) => {
 });
 
 // Jalankan client
-console.log("🚀 Starting WhatsApp Bot TJA v3.0...");
+console.log("🚀 Starting WhatsApp Bot TJA v4.0...");
 console.log("🎭 Loading 50+ hilarious responses...");
 console.log("📸 Initializing twin finder system...");
 console.log("📊 Loading enhanced attendance management system...");
 console.log("🕌 Activating Islamic features for Friday prayers...");
 console.log("📅 Initializing daily greeting system...");
 console.log("🎭 Loading funny sanctions for Friday prayer absentees...");
+console.log("🎨 NEW: Loading advanced sticker creation engine...");
+console.log("🧠 NEW: Initializing AI-powered Q&A assistant...");
+console.log("🌐 NEW: Connecting to web search APIs...");
 client.initialize();
 
 // Handle graceful shutdown
 process.on("SIGINT", async () => {
   console.log("\n🛑 Bot dihentikan oleh user");
-  console.log("👋 TJA Bot v3.0 shutting down gracefully...");
+  console.log("👋 TJA Bot v4.0 shutting down gracefully...");
   console.log("💾 Saving attendance data...");
   console.log("🕌 Saving Friday prayer records...");
+  console.log("🎨 Cleaning up sticker cache...");
+  console.log("🧠 Saving AI conversation context...");
   await client.destroy();
   process.exit(0);
 });
 
-console.log("🎉 TJA Bot v3.0 initialized successfully!");
+console.log("🎉 TJA Bot v4.0 initialized successfully!");
 console.log("💫 Ready to bring joy & Islamic values to your WhatsApp groups!");
 console.log("📊 Enhanced attendance system with Friday prayer tracking ready!");
 console.log("🎭 Funny sanctions loaded and ready to deploy!");
 console.log("🕌 Islamic features activated - Barakallahu fiikum!");
+console.log("🎨 Advanced sticker maker with image processing ready!");
+console.log("🧠 AI-powered assistant with web search capabilities online!");
+console.log("🌟 All systems green - TJA Bot v4.0 fully operational!");
