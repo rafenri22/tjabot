@@ -5,7 +5,7 @@ class BotHelpers {
     return message.from.includes("@g.us");
   }
 
-  // Fungsi untuk mengecek apakah command valid
+  // Fungsi untuk mengecek apakah command valid (UPDATED - added /hari)
   static isValidCommand(text) {
     const commands = [
       "/TJA-",
@@ -25,6 +25,8 @@ class BotHelpers {
       "/REKAP",
       "/jumlah",
       "/JUMLAH",
+      "/hari", // NEW COMMAND
+      "/HARI", // NEW COMMAND
     ];
     return commands.some((cmd) =>
       text.toLowerCase().startsWith(cmd.toLowerCase())

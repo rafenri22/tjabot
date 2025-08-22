@@ -386,7 +386,7 @@ class CommandHandlers {
     }
   }
 
-  // Handler untuk command /info
+  // Handler untuk command /info (Updated to include new commands)
   async handleInfoCommand(message) {
     const infoTexts = [
       `📋 *PANDUAN PENGGUNAAN BOT TJA* 🤖
@@ -404,8 +404,12 @@ Random pilih member untuk menjawab (by AI algorithm)
 Contoh: /siapa yang paling ganteng?
 
 👥 */kembaran nama* 
-Mencari kembaran seseorang dengan foto (NEW!)
+Mencari kembaran seseorang dengan foto
 Contoh: /kembaran agungg
+
+🌅 */hari*
+Pengantar harian dari bot (beda setiap hari!)
+✨ Khusus Jumat: Ajakan sholat Jumat + absensi!
 
 🔧 */verifikasi TJA-XXX NICKNAME=nama* 
 Verifikasi armada dengan nickname
@@ -414,11 +418,11 @@ Verifikasi armada dengan nickname
 Upload foto armada (kirim foto dengan caption ini)
 
 ✅ */hadir TJA-XXX*
-Absensi kehadiran harian
+Absensi kehadiran (harian/jumatan)
 Contoh: /hadir TJA-001
 
 🏥 */absen TJA-XXX keterangan*
-Izin dengan alasan
+Izin dengan alasan (harian/jumatan)
 Contoh: /absen TJA-001 sakit demam
 
 ℹ️ */info*
@@ -443,18 +447,23 @@ _PT TRIJAYA AGUNG LESTARI @2025_
 👫 **Twin Finder**: /kembaran [nama]
    Find someone's lookalike (with photo!)
 
+🌤️ **Daily Greeting**: /hari
+   Get daily greeting (special Friday features!)
+
 ✅ **Verification**: /verifikasi [kode] [action]
    Verify your armada data
 
 📋 **Attendance System**:
-   • /hadir TJA-XXX - Mark attendance
+   • /hadir TJA-XXX - Mark attendance (daily/Friday)
    • /absen TJA-XXX reason - Request leave
+   • /rekap - Daily attendance summary
+   • /jumlah [option] - Monthly reports
 
 ❓ **Help**: /info
    Show this guide
 
 *Made with ❤️ by TJA Tech Team*
-_"Innovation in Transportation"_ 🚀`,
+_"Innovation in Transportation & Islamic Values"_ 🚀🕌`,
     ];
 
     const randomInfo = infoTexts[Math.floor(Math.random() * infoTexts.length)];

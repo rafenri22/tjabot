@@ -2,6 +2,7 @@ const { Client, LocalAuth, MessageMedia } = require("whatsapp-web.js");
 const qrcode = require("qrcode-terminal");
 const CommandHandlers = require("./handlers/commandHandlers");
 const AttendanceHandlers = require("./handlers/attendanceHandlers");
+const DailyGreetingHandlers = require("./handlers/dailyGreetingHandlers");
 const BotHelpers = require("./utils/helpers");
 
 // Inisialisasi client WhatsApp
@@ -43,6 +44,7 @@ const client = new Client({
 
 const commandHandlers = new CommandHandlers(client);
 const attendanceHandlers = new AttendanceHandlers(client);
+const dailyGreetingHandlers = new DailyGreetingHandlers(client);
 
 // Variable untuk tracking last reset date
 let lastResetDate = null;
@@ -51,7 +53,9 @@ let lastResetDate = null;
 client.on("qr", (qr) => {
   console.log("📱 Scan QR Code di bawah ini untuk login WhatsApp:");
   qrcode.generate(qr, { small: true });
-  console.log("✨ TJA Bot v2.0 - Now with 50+ meme responses! 🎭");
+  console.log(
+    "✨ TJA Bot v3.0 - Now with Daily Greetings & Islamic Features! 🕌🎭"
+  );
 });
 
 // Event ketika client sudah siap
@@ -59,21 +63,27 @@ client.on("ready", () => {
   console.log("✅ Bot WhatsApp TJA berhasil terhubung!");
   console.log("🤖 Bot siap menerima perintah di grup...");
   console.log("🎭 Now featuring 50+ hilarious responses!");
+  console.log("🕌 Islamic features for Friday prayers!");
+  console.log("📅 Daily greeting system activated!");
   console.log("📋 Commands available:");
   console.log("   - /TJA-XXX (info armada with style)");
   console.log("   - /jomox nama (cek jomok level - 50+ responses!)");
   console.log(
     "   - /siapa pertanyaan? (random member picker - sarcastic edition)"
   );
-  console.log("   - /kembaran nama (NEW! find twin with photo)");
+  console.log("   - /kembaran nama (find twin with photo)");
+  console.log("   - /hari (daily greeting - special Friday features!) 🆕");
   console.log("   - /verifikasi (verifikasi armada - now with sass)");
-  console.log("   - /hadir TJA-XXX (attendance system)");
-  console.log("   - /absen TJA-XXX keterangan (leave request)");
-  console.log("   - /rekap (daily attendance recap)");
-  console.log("   - /jumlah TJA-XXX/all (monthly attendance report)");
-  console.log("   - /info (help with personality)");
-  console.log("🚀 TJA Bot v2.0 is ready to entertain!");
-  console.log("📊 Attendance system initialized!");
+  console.log("   - /hadir TJA-XXX (attendance: daily + Friday prayer)");
+  console.log("   - /absen TJA-XXX keterangan (leave request: daily + Friday)");
+  console.log("   - /rekap (daily attendance recap with Friday sanctions)");
+  console.log(
+    "   - /jumlah TJA-XXX/all/jumatan (monthly reports including Friday prayers)"
+  );
+  console.log("   - /info (help with personality + new features)");
+  console.log("🚀 TJA Bot v3.0 is ready to entertain & inspire!");
+  console.log("📊 Enhanced attendance system with Islamic values!");
+  console.log("🎭 Funny sanctions for Friday prayer absentees!");
   console.log("");
 
   // Initialize daily reset
@@ -102,6 +112,20 @@ async function initializeDailyReset() {
       console.log(`✅ Daily attendance reset completed for ${currentDate}`);
     }
   }, 3600000); // Check every hour (3600000 ms)
+
+  // Set interval untuk apply Friday sanctions (setiap jam di hari Jumat setelah jam 15:00)
+  setInterval(async () => {
+    const now = new Date();
+    if (now.getDay() === 5 && now.getHours() >= 15) {
+      // Friday after 3 PM
+      console.log("🕌 Checking for Friday prayer sanctions...");
+      const sanctionsApplied =
+        await dailyGreetingHandlers.applyFridaySanctions();
+      if (sanctionsApplied > 0) {
+        console.log(`✅ Applied ${sanctionsApplied} Friday prayer sanctions`);
+      }
+    }
+  }, 3600000); // Check every hour
 }
 
 // Event ketika ada pesan masuk
@@ -126,8 +150,13 @@ client.on("message", async (message) => {
 
     const lowerText = text.toLowerCase();
 
+    // Handle /hari command (NEW!)
+    if (lowerText === "/hari") {
+      await dailyGreetingHandlers.handleHariCommand(message);
+    }
+
     // Handle /TJA-xxx command
-    if (lowerText.startsWith("/tja-")) {
+    else if (lowerText.startsWith("/tja-")) {
       const kodeUnit = text.substring(1); // Remove /
       await commandHandlers.handleTJACommand(message, kodeUnit);
     }
@@ -167,7 +196,7 @@ client.on("message", async (message) => {
       await commandHandlers.handleVerifikasiCommand(message, text);
     }
 
-    // Handle /hadir command (NEW ATTENDANCE FEATURE)
+    // Handle /hadir command (ENHANCED - now supports both daily and Friday attendance)
     else if (
       lowerText.startsWith("/hadir ") ||
       lowerText.startsWith("/HADIR ")
@@ -188,7 +217,7 @@ client.on("message", async (message) => {
       }
     }
 
-    // Handle /absen command (NEW ATTENDANCE FEATURE)
+    // Handle /absen command (ENHANCED - now supports both daily and Friday attendance)
     else if (
       lowerText.startsWith("/absen ") ||
       lowerText.startsWith("/ABSEN ")
@@ -196,12 +225,12 @@ client.on("message", async (message) => {
       await attendanceHandlers.handleAbsenCommand(message, text);
     }
 
-    // Handle /rekap command (NEW ATTENDANCE FEATURE)
+    // Handle /rekap command (ENHANCED - now shows Friday sanctions)
     else if (lowerText === "/rekap" || lowerText === "/REKAP") {
       await attendanceHandlers.handleRekapCommand(message);
     }
 
-    // Handle /jumlah command (NEW ATTENDANCE FEATURE)
+    // Handle /jumlah command (ENHANCED - now includes /jumlah jumatan)
     else if (
       lowerText.startsWith("/jumlah ") ||
       lowerText.startsWith("/JUMLAH ")
@@ -209,7 +238,7 @@ client.on("message", async (message) => {
       await attendanceHandlers.handleJumlahCommand(message, text);
     }
 
-    // Handle /info command
+    // Handle /info command (UPDATED - now includes new features)
     else if (lowerText === "/info") {
       await commandHandlers.handleInfoCommand(message);
     }
@@ -221,7 +250,8 @@ client.on("message", async (message) => {
       "❌ Error detected! Server lagi bad mood, coba lagi nanti ya 😤",
       "❌ System malfunction! Mungkin perlu kopi dulu ☕",
       "❌ Bot.exe has stopped working. Please restart your expectations 🤖💥",
-      "❌ Attendance system temporarily unavailable! Server lagi absen juga 📊💔",
+      "❌ System lagi loading... tapi kayaknya stuck. Try again! 🔄",
+      "❌ Error 404: Brain.exe not found! Mungkin lagi istirahat 🧠💤",
     ];
     const randomError =
       errorResponses[Math.floor(Math.random() * errorResponses.length)];
@@ -283,21 +313,27 @@ process.on("uncaughtException", (error) => {
 });
 
 // Jalankan client
-console.log("🚀 Starting WhatsApp Bot TJA v2.0...");
+console.log("🚀 Starting WhatsApp Bot TJA v3.0...");
 console.log("🎭 Loading 50+ hilarious responses...");
 console.log("📸 Initializing twin finder system...");
-console.log("📊 Loading attendance management system...");
+console.log("📊 Loading enhanced attendance management system...");
+console.log("🕌 Activating Islamic features for Friday prayers...");
+console.log("📅 Initializing daily greeting system...");
+console.log("🎭 Loading funny sanctions for Friday prayer absentees...");
 client.initialize();
 
 // Handle graceful shutdown
 process.on("SIGINT", async () => {
   console.log("\n🛑 Bot dihentikan oleh user");
-  console.log("👋 TJA Bot v2.0 shutting down gracefully...");
+  console.log("👋 TJA Bot v3.0 shutting down gracefully...");
   console.log("💾 Saving attendance data...");
+  console.log("🕌 Saving Friday prayer records...");
   await client.destroy();
   process.exit(0);
 });
 
-console.log("🎉 TJA Bot v2.0 initialized successfully!");
-console.log("💫 Ready to bring joy to your WhatsApp groups!");
-console.log("📊 Attendance system ready for daily operations!");
+console.log("🎉 TJA Bot v3.0 initialized successfully!");
+console.log("💫 Ready to bring joy & Islamic values to your WhatsApp groups!");
+console.log("📊 Enhanced attendance system with Friday prayer tracking ready!");
+console.log("🎭 Funny sanctions loaded and ready to deploy!");
+console.log("🕌 Islamic features activated - Barakallahu fiikum!");
